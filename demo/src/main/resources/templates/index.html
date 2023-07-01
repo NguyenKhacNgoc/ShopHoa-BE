@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css}">
+	<link rel="stylesheet" th:href="@{/css/base.css}">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<div class="app">
+		<header class="header">
+			<div class="grid">
+				<nav class="header__navbar">
+					<div class="loggedInUser" th:if="${session.loggedInUser}">
+						<ul class="header__navbar-list">
+							<li class="header__navbar-item">Xin chào, <span th:text = "${session.loggedInUser.username}"></span></li>
+						</ul>
+						<ul class="header__navbar-list">
+							<li class="header__navbar-item"><a class="header__navbar-item-link" style="text-decoration: none;" th:href="@{/logout}">Đăng xuất</a></li>
+						</ul>
+					</div>
+					<div class="loggedInUser" th:unless = "${session.loggedInUser}">
+						<ul class="header__navbar-list" >
+							<li class="header__navbar-item">
+								<a th:href="@{/register}" id="btn_register" class="header__navbar-item-link" style="text-decoration: none;">Đăng kí</a>
+							</li>
+							<li class="header__navbar-item">
+								<a th:href="@{/login}" id="btn_login" class="header__navbar-item-link" style="text-decoration: none;">Đăng nhập</a>
+							</li>
+						</ul>
+					</div>
+					
+				</nav>
+				<div class="header-item">
+					<div class="header-logo">
+						<a th:href="@{/}">
+							<img class="logo-img" th:src="@{/images/logo.png}" alt="logo">
+						</a>
+						
+					</div>
+					<div class="header-search">
+						<input type="text" class="header-search-input" placeholder="Nhấp vào để tìm kiếm">
+						<a class="header-search-btn">
+							<img th:src="@{/images/search.png}" alt="search" class="header-search-btn-img">
+						</a>
+					</div>
+					<div class="header-cart">
+						<a th:href="@{/cart}">
+							<img th:src="@{/images/cart.png}" alt="" class="cart-img">
+						</a>
+						
+
+					</div>
+
+				</div>
+                <div class="header-menu">
+                    <ul class="header-menu-list">
+                        <li class="header-menu-item">
+                            <a th:href="@{/index(category='Hoa chúc mừng')}" class="header-menu-item-link">Hoa chúc mừng</a>
+                        </li>
+                        <li class="header-menu-item">
+                            <a th:href="@{/index(category='Hoa chia buồn')}" class="header-menu-item-link">Hoa chia buồn</a>
+                        </li>
+                        <li class="header-menu-item">
+                            <a th:href="@{/index(category='Hoa sinh nhật')}" class="header-menu-item-link">Hoa sinh nhật</a>
+                        </li>
+                        <li class="header-menu-item">
+                            <a th:href="@{/index(category='Hoa tình yêu')}" class="header-menu-item-link">Hoa tình yêu</a>
+                        </li>
+                        <li class="header-menu-item">
+                            <a th:href="@{/index(category='Giỏ hoa')}" class="header-menu-item-link">Giỏ hoa</a>
+                        </li>
+                    </ul>
+                </div>
+				
+			</div>
+		</header>
+		<div class="container" >
+			<!-- Grid - Row - Column -->
+			<div class="grid">
+				<div class="home-filter">
+					<span class="home-filter-label" style="font-size: 1.4rem; margin-right: 16px;">Sắp xếp theo</span>
+					<button class="btn" id="sortPopular">Phổ biến</button>
+					<button class="btn btn--primary" id="sortNewest">Mới nhất</button>
+					<button class="btn" id="sortSelling">Bán chạy</button>
+				</div>
+				<div class="grid__row" >
+					<div class="grid__column-2" th:each = "hoa:${hoalist}">
+						<!-- Sản phẩm -->
+							<div class="product-item">
+								<a th:href="@{chitiethoa/{id}(id = ${hoa.id})}">
+									<img th:src="@{${hoa.hinhanh}}" alt="" class="product-item-img">
+									<h4 class="product-item-name" th:text = "${hoa.tenhoa}"></h4>
+									<p class="product-item-price" th:text = "${hoa.giaban}"></p>
+								</a>
+
+							</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<footer class="footer">
+			<div class="grid">
+				<div class="grid__row">
+					<div class="grid__column-footer">
+						<h3 class="heading-footer">Thông tin liên hệ</h3>
+						<p>Địa chỉ: Định Công, Hoàng Mai, Hà Nội</p>
+						<p>Di động: 0364600823</p>
+						<p>Liên hệ: khacngoc1214@gmail.com</p>
+					</div>
+					<div class="grid__column-footer">
+						<h3 class="heading-footer">Liên kết</h3>
+						<ul class="footer-list">
+							<li class="footer-item">
+								<a href="" class="footer-link">Giới thiệu</a>
+							</li>
+							<li class="footer-item">
+								<a href="" class="footer-link">Hoa</a>
+							</li>
+							<li class="footer-item">
+								<a href="" class="footer-link">Giỏ hàng</a>
+							</li>
+						</ul>
+					</div>
+					<div class="grid__column-footer">
+						<h3 class="heading-footer">Hỗ trợ</h3>
+						<ul class="footer-list">
+							<li class="footer-item">
+								<a href="" class="footer-link">Hỗ trợ mua hàng</a>
+							</li>
+							<li class="footer-item">
+								<a href="" class="footer-link">Hỗ trợ thanh toán</a>
+							</li>
+							<li class="footer-item">
+								<a href="" class="footer-link">Hỗ trợ tư vấn</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+		</footer>
+
+	</div>
+	<script>
+		var sortPopularbtn = document.getElementById("sortPopular");
+		var sortNewestbtn = document.getElementById("sortNewest");
+		var sortSellingbtn = document.getElementById("sortSelling");
+		sortPopularbtn.onclick = function(){
+			sortPopularbtn.style.backgroundColor = "var(--primary-btn-color)";
+			sortPopularbtn.style.color = "var(--white-color)";
+			sortNewestbtn.style.backgroundColor = "var(--white-color)";
+			sortNewestbtn.style.color = "var(--text-color)";
+			sortSellingbtn.style.backgroundColor = "var(--white-color)";
+			sortSellingbtn.style.color = "var(--text-color)";
+
+		};
+		sortNewestbtn.onclick = function(){
+			sortPopularbtn.style.backgroundColor = "var(--white-color)";
+			sortPopularbtn.style.color = "var(--text-color)";
+			sortNewestbtn.style.backgroundColor = "var(--primary-btn-color)";
+			sortNewestbtn.style.color = "var(--white-color)";
+			sortSellingbtn.style.backgroundColor = "var(--white-color)";
+			sortSellingbtn.style.color = "var(--text-color)";
+
+		};
+		sortSellingbtn.onclick = function(){
+			sortPopularbtn.style.backgroundColor = "var(--white-color)";
+			sortPopularbtn.style.color = "var(--text-color)";
+			sortNewestbtn.style.backgroundColor = "var(--white-color)";
+			sortNewestbtn.style.color = "var(--text-color)";
+			sortSellingbtn.style.backgroundColor = "var(--primary-btn-color)";
+			sortSellingbtn.style.color = "var(--white-color)";
+
+		};
+
+		$(document).ready(function(){
+			//xử lý sự kiện click button sắp xếp
+			$("#sortPopular").click(function(){
+				sortProducts("popular");
+			});
+			$("#sortNewest").click(function(){
+				sortProducts("newest");
+			});
+			$("#sortSelling").click(function(){
+				sortProducts("selling");
+			});
+		});
+
+		//Hàm gửi yêu cầu sắp xếp và nhận danh sách các sản phẩm đã sắp xếp
+		function sortProducts(sortBy){
+			$.ajax({
+				url:"/index/sort",
+				type:"GET",
+				data:{sortBy:sortBy}, //Tham số gửi đi xác định cách sắp xếp
+				success:function(data){
+					updateProductList(data);
+				},
+				error:function(xhr, textStatus, error){
+					console.log(error);
+				}
+			});
+		};
+
+		function updateProductList(products) {
+			var container = $(".container");
+            var productList = container.find(".grid__row")
+            productList.empty(); // Xóa danh sách sản phẩm hiện tại
+
+            // Duyệt qua danh sách sản phẩm mới và tạo các thành phần HTML tương ứng
+            for (var i = 0; i < products.length; i++) {
+                var product = products[i];
+                var productItem = $('<div class="grid__column-2">' +
+                    '<div class="product-item">' +
+                    '<a href="/chitiethoa/' + product.id + '">' +
+                    '<img src="' + product.hinhanh + '" alt="" class="product-item-img">' +
+                    '<h4 class="product-item-name">' + product.tenhoa + '</h4>' +
+                    '<p class="product-item-price">' + product.giaban + '</p>' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>');
+
+                productList.append(productItem); // Thêm sản phẩm vào danh sách
+            }
+        }
+
+		
+
+	</script>
+
+	<!-- <div class="modal" id="modal">
+		<div id="modal-register" class="modal modal-register">
+			<div class="modal__overlay"></div>
+			<div class="modal__body">
+				<div class="modal_inner">
+					<div class="auth-form">
+						<div class="auth-form__header">
+							<h3 class="auth-form__heading">Đăng kí</h3>
+						</div>
+						<div class="auth-form__form">
+							<form th:action="@{/auth/register}" method="post">
+								<div class="auth-form__group">
+									<input type="text" class="auth-form__input" id="username" name="username" placeholder="Tên tài khoản">
+								</div>
+								<div class="auth-form__group">
+									<input type="email" class="auth-form__input" id="email" name="email" placeholder="Nhập vào email">
+								</div>
+								<div class="auth-form__group">
+									<input type="password" class="auth-form__input" id="password" name="password" placeholder="Nhập vào mật khẩu">
+								</div>
+		
+								<div class="auth-form__controls" >
+									<button class="btn" id="btn_back_fromDK" style="margin-top: 100px; margin-left: 100px;">Trở lại</button>
+									<button type="submit" class="btn btn--primary" style="margin-top: 100px; margin-left: 100px;">Đăng kí</button>
+								</div>
+							</form>
+							
+	
+						</div>
+	
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<div id="modal-login" class="modal modal-login">
+			<div class="modal__overlay"></div>
+			<div class="modal__body">
+				<div class="modal_inner">
+					<div class="auth-form">
+						<div class="auth-form__header">
+							<h3 class="auth-form__heading">Đăng nhập</h3>
+						</div>
+						<div class="auth-form__form">
+							<form th:action="@{/auth/login}" method="post">
+								<div class="auth-form__group">
+									<input type="text" class="auth-form__input" id="username" name="username" placeholder="Tên tài khoản">
+								</div>
+								<div class="auth-form__group">
+									<input type="password" class="auth-form__input" id="password" name="password" placeholder="Nhập vào mật khẩu">
+								</div>
+		
+								<div class="auth-form__controls" >
+									<button class="btn" id="btn_back_fromDN" style="margin-top: 100px; margin-left: 100px;">Trở lại</button>
+									<button type="submit" class="btn btn--primary" style="margin-top: 100px; margin-left: 100px;">Đăng nhập</button>
+								</div>
+							</form>
+							
+	
+						</div>
+	
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div> -->
+
+	<!-- <script>
+		
+		 // Lấy tham chiếu đến các phần tử HTML
+		var modal = document.getElementById("modal");
+		var registerBtn = document.getElementById("btn_register");
+		var loginBtn = document.getElementById("btn_login");
+		var registerModal = document.getElementById("modal-register");
+		var loginModal = document.getElementById("modal-login");
+		var btn_back_fromDK = document.getElementById("btn_back_fromDK");
+		var btn_back_fromDN = document.getElementById("btn_back_fromDN")
+		var switchLoginBtn = document.getElementById("switch_login");
+
+		// Xử lý khi nhấp vào nút "Đăng kí"
+		registerBtn.onclick = function() {
+		event.preventDefault();
+		modal.style.display = "flex";
+		registerModal.style.display = "flex";
+		};
+
+		// Xử lý khi nhấp vào nút "Đăng nhập"
+		loginBtn.onclick = function() {
+		event.preventDefault();
+		modal.style.display = "flex";
+		registerModal.style.display = "none";
+		loginModal.style.display = "flex";
+		};
+		
+		// Xử lý khi nhấp vào nút trở lại
+		btn_back_fromDK.onclick = function() {
+		event.preventDefault();
+		modal.style.display = "none"
+    	registerModal.style.display = "none";
+    	loginModal.style.display = "none";
+		};
+		// Xử lý khi nhấp vào nút trở lại
+		btn_back_fromDN.onclick = function() {
+		event.preventDefault();
+		modal.style.display = "none"
+    	registerModal.style.display = "none";
+    	loginModal.style.display = "none";
+		};
+  
+/*
+		// Xử lý khi nhấp vào liên kết "Đăng kí" trong form đăng nhập
+		switchLoginBtn.onclick = function() {
+			registerModal.style.display = "block";
+			oginModal.style.display = "none";
+		};
+
+	*/
+	</script> -->
+</body>
+</html>
