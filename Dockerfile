@@ -1,10 +1,18 @@
-FROM maven:3.9.3-openjdk:22-jdk AS build
-WORKDIR /app
-COPY . /app/
-RUN mvn clean package
+# Sử dụng image adoptopenjdk phiên bản 11 làm base
+FROM adoptopenjdk:11-jdk-hotspot
 
-FROM openjdk:17-alpine
+# Thiết lập thư mục làm việc trong container
 WORKDIR /app
-COPY --from=build /app/target/*.jar /app/app.jar
+
+# Sao chép mã nguồn và các tệp cần thiết vào container
+COPY . /app
+
+# Cài đặt Maven và cài đặt phụ thuộc
+RUN apt-get update && apt-get install -y maven
+RUN mvn install
+
+# Cấu hình cổng lắng nghe
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+# Chạy ứng dụng
+CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]
