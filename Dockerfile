@@ -1,4 +1,4 @@
-FROM maven:3.9.3-openjdk-17 AS build
+FROM maven:3.9.3-openjdk:22-jdk AS build
 WORKDIR /app
 COPY . /app/
 RUN mvn clean package
