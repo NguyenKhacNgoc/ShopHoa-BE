@@ -1,10 +1,17 @@
-FROM maven:3.8.3-openjdk-17 AS build
-WORKDIR /app
-COPY . /app/
-RUN mvn clean package
+# Sử dụng Java 11 từ Docker Hub
+FROM openjdk:11
 
-FROM openjdk:17-alpine
+# Thiết lập thư mục làm việc trong container
 WORKDIR /app
-COPY  --from=build /app/target/*.jar /app/demo-0.0.1-SNAPSHOT.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo-0.0.1-SNAPSHOT.jar"]
+
+# Sao chép file JAR của ứng dụng vào thư mục làm việc
+COPY target/demo-0.0.1-SNAPSHOT.jar .
+
+# Thiết lập biến môi trường cho ứng dụng
+ENV PORT=8080
+
+# Mở cổng cho ứng dụng
+EXPOSE $PORT
+
+# Chạy ứng dụng Spring Boot
+CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
