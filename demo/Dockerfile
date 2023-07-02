@@ -5,10 +5,10 @@ FROM adoptopenjdk:11-jre-hotspot
 WORKDIR /app
 
 # Sao chép tất cả các file từ thư mục target của dự án Spring Boot vào trong container
-COPY target/*.jar demo-0.0.1-SNAPSHOT.jar
+COPY target/*.jar app.jar
 
 # Expose cổng mà ứng dụng sẽ lắng nghe
 EXPOSE 8080
 
 # Chạy ứng dụng khi container được khởi chạy
-CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
