@@ -1,10 +1,14 @@
-FROM maven:3.8.3-openjdk-17 AS build
-WORKDIR /app
-COPY ./app/
-RUN mvn clean package
+# Sử dụng một base image chứa JDK 11
+FROM adoptopenjdk/openjdk11:latest
 
-FROM openjdk:17-alpine
+# Thiết lập thư mục làm việc trong container
 WORKDIR /app
-COPY --from=build /app/target/*.jar /app/app.jar
+
+# Sao chép các file cần thiết vào thư mục làm việc
+COPY target/*.jar app.jar
+
+# Mở port mà ứng dụng sẽ lắng nghe
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+# Thiết lập lệnh chạy ứng dụng khi container được khởi động
+CMD ["java", "-jar", "app.jar"]
