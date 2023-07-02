@@ -1,14 +1,14 @@
-# Sử dụng một base image chứa JDK 11
-FROM adoptopenjdk/openjdk11:latest
+# Sử dụng Java 11 làm base image
+FROM adoptopenjdk:11-jre-hotspot
 
-# Thiết lập thư mục làm việc trong container
+# Thay đổi thư mục làm việc
 WORKDIR /app
 
-# Sao chép các file cần thiết vào thư mục làm việc
-COPY target/*.jar app.jar
+# Sao chép tất cả các file từ thư mục target của dự án Spring Boot vào trong container
+COPY target/*.jar demo-0.0.1-SNAPSHOT.jar
 
-# Mở port mà ứng dụng sẽ lắng nghe
+# Expose cổng mà ứng dụng sẽ lắng nghe
 EXPOSE 8080
 
-# Thiết lập lệnh chạy ứng dụng khi container được khởi động
-CMD ["java", "-jar", "app.jar"]
+# Chạy ứng dụng khi container được khởi chạy
+CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
