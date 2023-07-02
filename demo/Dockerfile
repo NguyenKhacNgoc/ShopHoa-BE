@@ -1,17 +1,18 @@
-# Sử dụng Java 11 từ Docker Hub
-FROM openjdk:11
+# Sử dụng image adoptopenjdk phiên bản 11 làm base
+FROM adoptopenjdk:11-jdk-hotspot
 
 # Thiết lập thư mục làm việc trong container
 WORKDIR /app
 
-# Sao chép file JAR của ứng dụng vào thư mục làm việc
-COPY target/demo-0.0.1-SNAPSHOT.jar .
+# Sao chép mã nguồn và các tệp cần thiết vào container
+COPY . /app
 
-# Thiết lập biến môi trường cho ứng dụng
-ENV PORT=8080
+# Cài đặt Maven và cài đặt phụ thuộc
+RUN apt-get update && apt-get install -y maven
+RUN mvn install
 
-# Mở cổng cho ứng dụng
-EXPOSE $PORT
+# Cấu hình cổng lắng nghe
+EXPOSE 8080
 
-# Chạy ứng dụng Spring Boot
-CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
+# Chạy ứng dụng
+CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]
