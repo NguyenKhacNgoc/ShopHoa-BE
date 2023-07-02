@@ -1,23 +1,10 @@
-# Sử dụng hình ảnh cơ sở Maven để xây dựng ứng dụng
-FROM maven:3.8.3-openjdk-11-slim AS build
-
-# Sao chép các tệp tin từ thư mục cục bộ vào hình ảnh
-COPY . /app
-
-# Thiết lập thư mục làm việc
+FROM 3.8.7-eclipse-temurin-19 as build
 WORKDIR /app
+COPY pom.xml .
+COPY src/ src/
+RUN mvn -f pom.xml clean package
 
-# Xây dựng ứng dụng
-RUN mvn clean package -DskipTests
-
-# Sử dụng hình ảnh cơ sở OpenJDK để chạy ứng dụng đã xây dựng
-FROM openjdk:11-jre-slim
-
-# Sao chép file JAR đã xây dựng từ giai đoạn trước vào hình ảnh
-COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar /app/demo-0.0.1-SNAPSHOT.jar
-
-# Mở cổng mạng
-EXPOSE 8080
-
-# Chạy ứng dụng Spring Boot
-CMD ["java", "-jar", "/app/demo-0.0.1-SNAPSHOT.jar"]
+FROM eclipse-temurin:19
+WORKDIR /app
+COPY --from=build /app/target/*.jar demo-0.0.1-SNAPSHOT.jar
+ENTRYPOINT [“java”,“-jar”,“/demo-0.0.1-SNAPSHOT.jar”]
