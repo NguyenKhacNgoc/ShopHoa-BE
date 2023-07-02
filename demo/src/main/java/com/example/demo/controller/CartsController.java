@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.DTO.CartRequest;
 import com.example.demo.Entity.Cart_Item;
 import com.example.demo.repository.CartRepository;
-import com.example.demo.repository.HoaReponsitory;
+import com.example.demo.repository.HoaRepository;
 import com.example.demo.repository.UserRepository;
 
 @RestController
@@ -26,14 +26,14 @@ public class CartsController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private HoaReponsitory hoaReponsitory;
+    private HoaRepository hoaRepository;
     @Autowired
     private CartRepository cartRepository;
 
-    public CartsController(UserRepository userRepository, HoaReponsitory hoaReponsitory,
+    public CartsController(UserRepository userRepository, HoaRepository hoaRepository,
             CartRepository cartRepository) {
         this.userRepository = userRepository;
-        this.hoaReponsitory = hoaReponsitory;
+        this.hoaRepository = hoaRepository;
         this.cartRepository = cartRepository;
     }
 
@@ -50,7 +50,7 @@ public class CartsController {
         } else {
             Cart_Item cart_Item = new Cart_Item();
             cart_Item.setUser(userRepository.findById(cartRequest.getUserID()).get());
-            cart_Item.setHoa(hoaReponsitory.findById(cartRequest.getProductID()).get());
+            cart_Item.setHoa(hoaRepository.findById(cartRequest.getProductID()).get());
 
             cart_Item.setSoluong(cartRequest.getQuantity());
 

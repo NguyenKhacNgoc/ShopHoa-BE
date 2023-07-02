@@ -18,28 +18,28 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.Entity.Hoa;
 
-import com.example.demo.repository.HoaReponsitory;
+import com.example.demo.repository.HoaRepository;
 
 @RestController
 @RequestMapping("/api")
 public class TestAPI {
     @Autowired
-    private HoaReponsitory hoaReponsitory;
+    private HoaRepository hoaRepository;
 
-    public TestAPI(HoaReponsitory hoaReponsitory) {
-        this.hoaReponsitory = hoaReponsitory;
+    public TestAPI(HoaRepository hoaRepository) {
+        this.hoaRepository = hoaRepository;
 
     }
 
     @GetMapping("/productdetail/{productID}")
     public Hoa detail(@PathVariable Long productID) {
-        return hoaReponsitory.findById(productID).get();
+        return hoaRepository.findById(productID).get();
     }
 
     @GetMapping("/getcategory")
     public List<String> getallCategories() {
 
-        return hoaReponsitory.findDistinctCategoryBy();
+        return hoaRepository.findDistinctCategoryBy();
 
     }
 
@@ -67,9 +67,14 @@ public class TestAPI {
         }
         hoa.setCategory(category);
         // Lưu vào database
-        hoaReponsitory.save(hoa);
+        hoaRepository.save(hoa);
         return ResponseEntity.ok("Thêm thành công");
 
+    }
+
+    @GetMapping("/searchresults/{inputSearch}")
+    public List<Hoa> searchResults(@PathVariable String inputSearch) {
+        return hoaRepository.findByTenhoaContaining(inputSearch);
     }
 
 }

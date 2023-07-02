@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.Entity.Admin;
 import com.example.demo.Entity.Hoa;
 import com.example.demo.repository.AdminRepository;
-import com.example.demo.repository.HoaReponsitory;
+import com.example.demo.repository.HoaRepository;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -21,9 +21,9 @@ public class AdminController {
     @Autowired
     private AdminRepository adminRepository;
     @Autowired
-    private HoaReponsitory hoaReponsitory;
+    private HoaRepository hoaReponsitory;
 
-    public AdminController(AdminRepository adminRepository, HoaReponsitory hoaReponsitory) {
+    public AdminController(AdminRepository adminRepository, HoaRepository hoaReponsitory) {
         this.adminRepository = adminRepository;
         this.hoaReponsitory = hoaReponsitory;
 

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.example.demo.Entity.Hoa;
 
-public interface HoaReponsitory extends JpaRepository<Hoa, Long> {
+public interface HoaRepository extends JpaRepository<Hoa, Long> {
     List<Hoa> findTop6ByOrderByGiabanDesc();
 
     List<Hoa> findAllByOrderByGiabanDesc();
@@ -21,4 +21,6 @@ public interface HoaReponsitory extends JpaRepository<Hoa, Long> {
 
     @Query("SELECT DISTINCT hoa.category from Hoa hoa")
     List<String> findDistinctCategoryBy();
+
+    List<Hoa> findByTenhoaContaining(String tenhoa);
 }
