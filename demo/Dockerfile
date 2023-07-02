@@ -1,5 +1,5 @@
 # Sử dụng hình ảnh cơ sở Maven để xây dựng ứng dụng
-FROM maven:3.8.3-openjdk-11-slim AS build
+FROM maven:3.9.1-openjdk-11-slim AS build
 
 # Sao chép các tệp tin từ thư mục cục bộ vào hình ảnh
 COPY . /app
