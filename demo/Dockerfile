@@ -1,18 +1,14 @@
-# Sử dụng image adoptopenjdk phiên bản 11 làm base
-FROM adoptopenjdk:11-jdk-hotspot
+# Sử dụng một base image chứa JDK 11
+FROM adoptopenjdk/openjdk11:latest
 
 # Thiết lập thư mục làm việc trong container
 WORKDIR /app
 
-# Sao chép mã nguồn và các tệp cần thiết vào container
-COPY . /app
+# Sao chép các file cần thiết vào thư mục làm việc
+COPY target/*.jar app.jar
 
-# Cài đặt Maven và cài đặt phụ thuộc
-RUN apt-get update && apt-get install -y maven
-RUN mvn install
-
-# Cấu hình cổng lắng nghe
+# Mở port mà ứng dụng sẽ lắng nghe
 EXPOSE 8080
 
-# Chạy ứng dụng
-CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]
+# Thiết lập lệnh chạy ứng dụng khi container được khởi động
+CMD ["java", "-jar", "app.jar"]
