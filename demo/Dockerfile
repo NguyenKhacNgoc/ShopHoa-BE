@@ -1,10 +1,14 @@
-FROM maven:3.8.3-openjdk-17 AS build
-WORKDIR /app
-COPY ./app/
-RUN mvn clean package
+# Sử dụng hình ảnh cơ sở Render cho Java
+FROM render/java:11
 
-FROM openjdk:17-alpine
+# Thiết lập thư mục làm việc
 WORKDIR /app
-COPY --from=build /app/target/*.jar /app/app.jar
+
+# Sao chép file JAR vào thư mục làm việc
+COPY target/myapp.jar /app/myapp.jar
+
+# Mở cổng mạng
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+# Chạy ứng dụng Spring Boot
+CMD ["java", "-jar", "myapp.jar"]
