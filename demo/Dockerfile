@@ -1,4 +1,5 @@
 # Sử dụng base image có chứa Java 11 và Maven để xây dựng ứng dụng Spring Boot
+FROM maven:3.6.3-jdk-11
 FROM adoptopenjdk:11-jdk-hotspot as build
 
 # Thiết lập thư mục làm việc
