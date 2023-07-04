@@ -11,7 +11,7 @@ WORKDIR /app
 RUN mvn clean package -DskipTests
 
 # Sử dụng hình ảnh cơ sở OpenJDK để chạy ứng dụng đã xây dựng
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:11-jdk
 
 # Sao chép file JAR đã xây dựng từ giai đoạn trước vào hình ảnh
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar /app/app.jar
