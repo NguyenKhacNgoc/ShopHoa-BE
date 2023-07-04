@@ -1,0 +1,11 @@
+# Sử dụng base image có chứa Java 11 và Maven để xây dựng ứng dụng Spring Boot
+FROM adoptopenjdk:11-jre-hotspot
+
+# Thiết lập thư mục làm việc
+WORKDIR /app
+
+# Sao chép file jar đã được xây dựng vào thư mục làm việc
+COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
+
+# Chạy ứng dụng Spring Boot
+CMD ["java", "-jar", "app.jar"]
