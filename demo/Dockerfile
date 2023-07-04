@@ -1,30 +1,23 @@
-# Sử dụng base image có chứa Java 11 và Maven để xây dựng ứng dụng Spring Boot
-FROM maven:3.6.3-jdk-11
-FROM adoptopenjdk:11-jdk-hotspot as build
+# Sử dụng hình ảnh cơ sở Maven để xây dựng ứng dụng
+FROM maven:3.8.3-openjdk-11-slim AS build
+
+# Sao chép các tệp tin từ thư mục cục bộ vào hình ảnh
+COPY . /app
 
 # Thiết lập thư mục làm việc
 WORKDIR /app
 
-# Sao chép tệp pom.xml đến thư mục làm việc
-COPY pom.xml .
+# Xây dựng ứng dụng
+RUN mvn clean package -DskipTests
 
-# Tải các phụ thuộc Maven
-RUN mvn dependency:go-offline -B
+# Sử dụng hình ảnh cơ sở OpenJDK để chạy ứng dụng đã xây dựng
+FROM openjdk:11-jre-slim
 
-# Sao chép toàn bộ mã nguồn vào thư mục làm việc
-COPY src ./src
+# Sao chép file JAR đã xây dựng từ giai đoạn trước vào hình ảnh
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar /app/app.jar
 
-# Xây dựng ứng dụng Spring Boot
-RUN mvn package -DskipTests
-
-# Sử dụng base image khác có chứa JRE để chạy ứng dụng
-FROM adoptopenjdk:11-jre-hotspot
-
-# Thiết lập thư mục làm việc
-WORKDIR /app
-
-# Sao chép file jar đã được xây dựng từ image 'build'
-COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
+# Mở cổng mạng
+EXPOSE 8080
 
 # Chạy ứng dụng Spring Boot
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "/app/app.jar"]
